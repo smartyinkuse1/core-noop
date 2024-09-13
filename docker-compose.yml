@@ -9,5 +9,6 @@ services:
       - .:/usr/src/app
       - /usr/src/app/node_modules
       - /usr/src/app/dist
+      - /usr/app/certs
     environment:
       - NODE_ENV=development
