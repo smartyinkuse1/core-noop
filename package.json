@@ -1,0 +1,31 @@
+{
+  "name": "core-noop",
+  "version": "1.0.0",
+  "description": "Mecho NO-OP Core service",
+  "main": "server.ts",
+  "scripts": {
+    "build": "npx tsc && cp -R src/protos dist/protos",
+    "start": "node dist/server.js",
+    "dev": "nodemon src/server.ts"
+  },
+  "keywords": [
+    "Typescript",
+    "backend"
+  ],
+  "author": "Ola",
+  "license": "ISC",
+  "dependencies": {
+    "@grpc/grpc-js": "^1.11.2",
+    "@grpc/proto-loader": "^0.7.13",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "nodemon": "^3.1.4"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.6.2"
+  }
+}
