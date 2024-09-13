@@ -1,6 +1,7 @@
 import * as grpc from '@grpc/grpc-js';
 import * as protoLoader from '@grpc/proto-loader';
 import path from 'path';
+import * as fs from 'fs'
 
 
 interface GenericMatch {
@@ -17,6 +18,15 @@ const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
   oneofs: true,
 });
 const productProto = grpc.loadPackageDefinition(packageDefinition).product as any;
+
+const serverCert = fs.readFileSync('./certs/server.crt');
+const serverKey = fs.readFileSync('./certs/server.key');
+const credentials = grpc.ServerCredentials.createSsl(null, [
+  {
+    cert_chain: serverCert,
+    private_key: serverKey,
+  },
+]);
 
 // Mock product database
 const products: GenericMatch = {
@@ -46,8 +56,9 @@ export function startGrpcServer(): void {
   const server = new grpc.Server();
   server.addService(productProto.ProductService.service, { GetProduct: getProduct });
 
+  // grpc.ServerCredentials.createInsecure()
   const address = '0.0.0.0:50051';
-  server.bindAsync(address, grpc.ServerCredentials.createInsecure(), (err, port) => {
+  server.bindAsync(address,credentials, (err, port) => {
     if (err) {
       console.error(`Failed to start gRPC server: ${err.message}`);
       return;
